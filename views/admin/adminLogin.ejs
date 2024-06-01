@@ -1,0 +1,70 @@
+<style>
+  * {
+    margin: 0px;
+    padding: 0px;
+    border-style: none;
+  }
+  .outer_box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #6796c7;
+  }
+  .center_box {
+    width: 70vw;
+    height: 65vh;
+    background-color: aqua;
+    display: flex;
+  }
+  .inner_left {
+    width: 35vw;
+    height: 65vh;
+    background-color: beige;
+  }
+  .inner_left img {
+    width: 35vw;
+    height: 65vh;
+  }
+  .inner_right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 35vw;
+    height: 65vh;
+    background-color: blueviolet;
+  }
+.inner_right form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20vw;
+    height: 15vh;
+}
+.inner_right form input{
+    height: 4vh;
+    border-radius: 5px;
+}
+
+
+</style>
+
+<body>
+  <div class="outer_box">
+    <div class="center_box">
+      <div class="inner_left">
+        <img src="/image/Preview.jpg" alt="Preview Image" />
+      </div>
+      <div class="inner_right">
+        <h1>Welcome</h1>
+        <form action="">
+          <input type="email" placeholder="Username or email" />
+          <input  type="password" placeholder="Password"/>
+          <input type="button" value="Sign in">
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
