@@ -7,6 +7,7 @@
     * {
       padding: 0px;
       margin: 0px;
+      font-family: sans-serif;
     }
     .full_body {
       width: 100vw;
@@ -15,7 +16,11 @@
     .left_side {
       width: 20vw;
       height: 100vh;
-      background-color: aqua;
+      background-color: #381d80;
+    }
+    .left_side h1{
+      color: orange;
+      padding: 30px;
     }
     .sidenav {
       display: flex;
@@ -33,7 +38,9 @@
 
     /* Style the sidenav links and the dropdown button */
     .sidenav a {
+      font-size: 13px;
       color: #f1f1f1;
+      margin-top: 10px;
     }
 
     .main {
@@ -50,8 +57,9 @@
     /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
     .dropdown-container {
       display: none;
-      background-color: #262626;
-      padding-left: 8px;
+      flex-direction: column;
+      /* background-color: #262626; */
+      padding-left: 40px;
     }
 
     /* Optional: Style the caret down icon */
@@ -60,11 +68,13 @@
       padding-right: 8px;
     }
     .dropdown-btn {
+      justify-content: space-between;
+      font-size: 13px;
+      margin-top: 10px;
       display: flex;
       border: none;
       background: none;
       color: #f1f1f1;
-
     }
 
     /* Some media queries for responsiveness */
@@ -82,24 +92,39 @@
 <body>
   <div class="full_body">
     <div class="left_side">
+      <h1 >Shoppy</h1>
       <div class="sidenav">
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#clients">Clients</a>
-        <a href="#contact">Contact</a>
+        <a href="#about">Dashboard</a>
         <button class="dropdown-btn">
-          Dropdown
+          Product Management
           <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-          <a href="#">Link 1</a>
-          <a href="#">Link 2</a>
-          <a href="#">Link 3</a>
+          <a href="#">Add Products</a>
+          <a href="#">Edit Products</a>
+          <a href="#">Delete Products</a>
         </div>
-        <a href="#contact">Search</a>
+        <button class="dropdown-btn">
+          Order Management
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-container">
+          <a href="#">View Orders</a>
+          <a href="#">Update Orders</a>
+          <a href="#">Delete Orders</a>
+        </div>
+        <button class="dropdown-btn">
+          User Management
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-container">
+          <a href="#">View Users</a>
+          <a href="#">Manage Users </a>
+        </div>
       </div>
     </div>
-    <div class="right_side"></div>
+    <div class="right_side">
+    </div>
   </div>
 </body>
 <script>
@@ -110,10 +135,10 @@
     dropdown[i].addEventListener("click", function () {
       this.classList.toggle("active");
       var dropdownContent = this.nextElementSibling;
-      if (dropdownContent.style.display === "block") {
+      if (dropdownContent.style.display === "flex") {
         dropdownContent.style.display = "none";
       } else {
-        dropdownContent.style.display = "block";
+        dropdownContent.style.display = "flex";
       }
     });
   }
