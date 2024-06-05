@@ -1,0 +1,105 @@
+<style>
+    * {
+      margin: 0px;
+      padding: 0px;
+      border-style: none;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    h1{
+      color: #6796c7;
+    }
+    .outer_box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 100vh;
+      background-color: #6796c7;
+    }
+    .center_box {
+      width: 70vw;
+      height: 80vh;
+      background-color: white;
+      display: flex;
+      border-radius: 10px;
+      box-shadow: 0px 5px 42px #1a324c;
+      overflow: hidden;
+    }
+    .inner_left {
+      width: 35vw;
+      height: 80vh;
+      background-color: beige;
+    }
+    .inner_left img {
+      width: 35vw;
+      height: 80vh;
+    }
+    .inner_right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 35vw;
+      height: 80vh;
+      /* background-color: blueviolet; */
+    }
+    .inner_right form {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 20vw;
+      height: 35vh;
+      margin: 20px;
+    }
+    .inner_right label{
+      color: #085eba;
+    }
+    .inner_right form input {
+      height: 8vh;
+      border-radius: 5px;
+      border: 2px solid #6796c7;
+      padding-left: 10px;
+    }
+    .button{
+      background-color: green;
+    }
+    #username_icon {
+      padding-left: 25px;
+      background: url("https://img.icons8.com/?size=100&id=85147&format=png&color=000000")
+        no-repeat left;
+      background-size: 20px;
+    }
+    #password_icon {
+      padding-left: 25px;
+      background: url("https://img.icons8.com/?size=100&id=rlA5mqN0V82a&format=png&color=000000")
+        no-repeat left;
+      background-size: 20px;
+    }
+  
+  </style>
+  
+  <body>
+    <div class="outer_box">
+      <div class="center_box">
+        <div class="inner_left">
+          <img src="/image/loginphoto.png" alt="Preview Image" />
+        </div>
+        <div class="inner_right">
+          <h1>Welcome</h1>
+          <form action="">
+            <label for="Username">Username</label>
+            <input
+              id="username_icon"
+              type="email"
+              placeholder="Username or email"
+            />
+            <label for="password">Password</label>
+            <input id="password_icon" type="password" placeholder="Password" />
+            <input class="button" type="submit" value="Sign in" />
+          </form>
+          <span>Don't have an account?<a href="#">Create an account </a></span>
+        </div>
+      </div>
+    </div>
+  </body>
+  

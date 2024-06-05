@@ -6,10 +6,11 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 app.get("/", (req, res) => {
-  res.render('./admin/adminLogin');
+  res.render('./admin/adminHome');
 });
-
+app.get("/login",(req,res)=>{
+  res.render('./user/userLogin')
+})
 app.listen(PORT, () => {
   console.log("server start...");
 });
-
