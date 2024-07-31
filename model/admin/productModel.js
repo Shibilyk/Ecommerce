@@ -1,43 +1,59 @@
 const mongoose = require("mongoose");
 
-const productSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
+const productSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
+    subcategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Subcategory",
+    },
+    price: {
+      type: Number,
+    },
+    offerPrice: {
+      type: Number,
+    },
+    stock_quantity: {
+      type: Number,
+    },
+    colors: {
+      type: [String],
+      default: [],
+    },
+    sizes: {
+      type: [String],
+      default: [],
+    },
+    mainImage: {
+      type: String, // URL or file path to the main image
+    },
+    images: [
+      {
+        type: String, // URL or file path to additional images
+      },
+    ],
   },
-  description: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  category: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-    min: 0,
-  },
-  stock_quantity: {
-    type: Number,
-    required: true,
-    min: 0,
-  },
-  image_url: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  {
+    timestamps: true,
+  }
+);
+
+productSchema.pre("save", function (next) {
+  this.updatedAt = Date.now();
+  next();
 });
 
-console.log("schema reached");
-const Product = mongoose.model("Products", productSchema);
+const productModel = mongoose.model("products", productSchema);
 
-module.exports =Product;
+module.exports = productModel;

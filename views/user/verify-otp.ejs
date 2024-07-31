@@ -1,0 +1,45 @@
+<head>
+    <title>OTP Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="flex items-center justify-center min-h-screen" style="background-color: #495E61;">
+    <div class="p-8 rounded-lg shadow-lg max-w-sm w-full" style="background-color: rgb(180, 186, 190);">
+        <h2 class="text-2xl font-semibold mb-6 text-center">Enter OTP</h2>
+        <% if (error) { %>
+            <div id="error-message" class=" mb-4 text-red-600 text-center">Invalid OTP. Please try again.</div>
+        <% } %>
+        <form class="space-y-4" action="/user/otp" method="post">
+            <div class="flex space-x-2 justify-center">
+                <input type="text" name="otp1" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded focus:outline-none focus:border-blue-500" required>
+                <input type="text" name="otp2" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded focus:outline-none focus:border-blue-500" required>
+                <input type="text" name="otp3" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded focus:outline-none focus:border-blue-500" required>
+                <input type="text" name="otp4" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded focus:outline-none focus:border-blue-500" required>
+                <input type="text" name="otp5" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded focus:outline-none focus:border-blue-500" required>
+                <input type="text" name="otp6" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded focus:outline-none focus:border-blue-500" required>
+            </div>
+            <button type="submit" class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Verify</button>
+        </form>
+        
+        <div class="text-center mt-4">
+            <a href="/user/resendOtp" class="text-blue-600 hover:underline focus:outline-none">Resend otp</a>
+        </div>
+    </div>
+
+    <script>
+        function resendOtp() {
+            
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const inputs = document.querySelectorAll('input[type="text"]');
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    if (input.value.length === 1 && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
