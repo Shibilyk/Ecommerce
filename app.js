@@ -13,10 +13,7 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const cartRoutes = require('./router/user/cartRt');
 const validation  = require("./middleware/dbValidation")
-<<<<<<< HEAD
 const checkOut = require('./router/user/checkOutRt')
-=======
->>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
 require("dotenv").config();
 const PORT = process.env.PORT;
 
@@ -43,14 +40,7 @@ app.use("/",userHome)
 app.use("/user",productDetail)
 app.use("/user",authentication)
 app.use('/cart',validation, cartRoutes);
-<<<<<<< HEAD
 app.use('/',validation,checkOut)
-=======
-
-app.get('/hello',(req,res)=>{
-  res.render('./user/checkOut')
-})
->>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
 app.listen(PORT, () => {
   console.log("server start...");
 });

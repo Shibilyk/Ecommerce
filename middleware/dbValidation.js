@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function validation(req, res, next) {
   if (req.session.user) {
     next();
@@ -10,16 +9,3 @@ function validation(req, res, next) {
   }
 }
 module.exports = validation;
-=======
-
-function validation(req,res,next){
-    if (req.session.user) {
-        next()
-      }
-      else{
-        req.session.prepage = `/cart${req.url}`;
-        res.redirect("/user/login");
-      }
-}
-module.exports = validation
->>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
