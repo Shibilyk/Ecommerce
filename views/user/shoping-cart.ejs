@@ -620,33 +620,63 @@
 
     <script>
       async function removeFromCart(event) {
+<<<<<<< HEAD
         event.preventDefault();
 
+=======
+        // Prevent the default button behavior
+        event.preventDefault();
+
+        // Get the button element and its data attributes
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
         const button = event.target;
         const productId = button.getAttribute("data-product-id");
         const size = button.getAttribute("data-size");
 
+<<<<<<< HEAD
         const url = `/cart/remove/${productId}?size=${size}`;
         const options = {
           method: "POST", 
+=======
+        // Prepare the request URL and options
+        const url = `/cart/remove/${productId}?size=${size}`;
+        const options = {
+          method: "POST", // Adjust this if you use a different method on the server
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
           headers: {
             "Content-Type": "application/json",
           },
         };
 
         try {
+<<<<<<< HEAD
           const response = await fetch(url, options);
 
           if (response.ok) {
         
             button.closest("tr").remove();
           } else {
+=======
+          // Send the request to the server
+          const response = await fetch(url, options);
+
+          if (response.ok) {
+            // Refresh the cart or update the UI as needed
+            // For example, you could reload the page or remove the row from the table
+            button.closest("tr").remove();
+          } else {
+            // Handle errors if the request fails
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
             console.error(
               "Failed to remove item from cart:",
               response.statusText
             );
           }
         } catch (error) {
+<<<<<<< HEAD
+=======
+          // Handle any network or other errors
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
           console.error("Error:", error);
         }
       }

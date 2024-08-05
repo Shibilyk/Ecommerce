@@ -2,10 +2,18 @@ const Cart = require("../../model/user/cartModel");
 const mongoose = require("mongoose");
 
 module.exports = {
+<<<<<<< HEAD
   getAddToCart: (req, res) => {
     res.redirect("/cart");
   },
   addToCart: async (req, res) => {
+=======
+  getAddToCart:(req,res)=>{
+    res.redirect("/cart");
+  },
+  addToCart: async (req, res) => {
+    console.log(req);
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
     const { productId, quantity, size, price } = req.body;
     const userId = req.session.user._id;
 
@@ -20,7 +28,11 @@ module.exports = {
       );
 
       if (itemIndex > -1) {
+<<<<<<< HEAD
         // cart.items[itemIndex].quantity += parseInt(quantity);
+=======
+        cart.items[itemIndex].quantity += parseInt(quantity);
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
       } else {
         cart.items.push({
           productId: new mongoose.Types.ObjectId(productId),
@@ -72,6 +84,10 @@ module.exports = {
     }
   },
   viewCart: async (req, res) => {
+<<<<<<< HEAD
+=======
+    console.log("hello"+req.url);
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
     const userId = req.session.user._id;
     const cart = await Cart.aggregate([
       { $match: { userId: new mongoose.Types.ObjectId(userId) } },
@@ -139,6 +155,7 @@ module.exports = {
     const { quantity, size } = req.body;
     const productId = req.params.id;
     const userId = req.session.user._id;
+<<<<<<< HEAD
     const intQuantity = parseInt(quantity);
     
 
@@ -152,11 +169,16 @@ module.exports = {
       
       console.log(index);
       
+=======
+
+    try {
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
       const filter = {
         userId: new mongoose.Types.ObjectId(userId),
         "items.productId": new mongoose.Types.ObjectId(productId),
         "items.size": size,
       };
+<<<<<<< HEAD
 
       const update = {
         $set: {
@@ -169,6 +191,15 @@ module.exports = {
       const result = await Cart.updateOne(filter, update);
       // console.log(result);
 
+=======
+      const update = {
+        $set: {
+          "items.$.quantity": parseInt(quantity),
+        },
+      };
+
+      const result = await Cart.updateOne(filter, update);
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
       const total = await Cart.aggregate([
         { $match: { userId: new mongoose.Types.ObjectId(userId) } },
 
@@ -204,7 +235,15 @@ module.exports = {
         );
       }
 
+<<<<<<< HEAD
       res.redirect("/cart");
+=======
+      if (result.modifiedCount > 0) {
+        res.redirect("/cart");
+      } else {
+        res.status(404).send("Item not found in cart");
+      }
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
@@ -216,6 +255,10 @@ module.exports = {
       const size = req.query.size;
 
       const userId = req.session.user._id;
+<<<<<<< HEAD
+=======
+      console.log(userId);
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
 
       // Use $pull to remove the item from the cart
       const result = await Cart.findOneAndUpdate(
@@ -251,6 +294,10 @@ module.exports = {
           },
         },
       ]);
+<<<<<<< HEAD
+=======
+      console.log(total);
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
 
       let totalAmount = total.length > 0 ? total[0].total : 0;
       console.log(totalAmount);

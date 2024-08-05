@@ -97,6 +97,10 @@
               <ul class="main-menu">
                 <li>
                   <a href="/user/home">Home</a>
+<<<<<<< HEAD
+=======
+                 
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
                 </li>
 
                 <li>
@@ -129,12 +133,20 @@
                 <i class="zmdi zmdi-search"></i>
               </div>
 
+<<<<<<< HEAD
               <!-- <div
+=======
+              <div
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
                 class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
                 data-notify="2"
               >
                 <i class="zmdi zmdi-shopping-cart"></i>
+<<<<<<< HEAD
               </div> -->
+=======
+              </div>
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
 
               <a
                 href="#"
@@ -371,6 +383,7 @@
       </div>
     </div>
 
+<<<<<<< HEAD
     <!-- Checkout Section -->
     <div class="container p-t-75 p-b-85">
       <!-- show address -->
@@ -830,12 +843,172 @@
 
               <div class="header-cart-total w-full p-tb-40">
                 Total: ₹ <%= total %>
+=======
+       <!-- Checkout Section -->
+       <div class="container p-t-75 p-b-85">
+        <!-- show address -->
+        <div class="row">
+          <div class="col-lg-7 m-lr-auto m-b-50">
+            <div class="m-lr-0-xl">
+              <div class="wrap-table-shopping-cart">
+                <form class="bg0 p-b-85" action="/submit-checkout" method="post">
+                  <h4 class="mtext-109 cl2 p-b-30">Checkout</h4>
+                  
+                  <div id="existing-address-section">
+                    <h5 class="mtext-109 cl2 p-b-10">Existing Address</h5>
+                    <p id="existing-address">123 Main St, Springfield, IL, 62704, USA</p>
+                    <button type="button" class="btn btn-secondary" id="show-address-form">Use a Different Address</button>
+                  </div>
+      
+                  <div id="address-form-section" style="display: none;">
+                    <div class="row">
+                      <div class="col-sm-6 p-b-30">
+                        <div class="bor8">
+                          <div class="m-b-12">
+                            <input class="form-control" type="text" name="name" placeholder="Name" required />
+                          </div>
+                        </div>
+                      </div>
+    
+                      <div class="col-sm-6 p-b-30">
+                        <div class="bor8">
+                          <div class="m-b-12">
+                            <input class="form-control" type="tel" name="phone" placeholder="Phone" required />
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+      
+                    <div class="row">
+                      <div class="col-sm-6 p-b-30">
+                        <div class="bor8">
+                          <div class="m-b-12">
+                            <input class="form-control" type="text" name="pincode" placeholder="Pincode" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 p-b-30">
+                        <div class="bor8">
+                          <div class="m-b-12">
+                            <input class="form-control" type="text" name="Locality" placeholder="Locality" required />
+                          </div>
+                        </div>
+                      </div>
+      
+                     
+                    </div>
+      
+                    <div class="bor8 m-b-20">
+                      <div class="m-b-12">
+                        <textarea class="g-nBNP v2VFa- _9-gNKZ" style="padding-top: 25px; resize: none; vertical-align: top;" placeholder="Address" name="" id=""></textarea>
+                      </div>
+                    </div>
+      
+                    <div class="row">
+                      <div class="col-sm-6 p-b-30">
+                        <div class="bor8">
+                          <div class="m-b-12">
+                            <input class="form-control" type="text" name="city" placeholder="City" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="bor8 m-b-20">
+                        <div class="m-b-12">
+                          <input class="form-control" type="text" name="State" placeholder="State" required />
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                     
+                   
+      
+                  <h4 class="mtext-109 cl2 p-b-30">Payment Details</h4>
+                  
+                  <div class="bor8 m-b-20">
+                    <div class="m-b-12">
+                      <input class="form-control" type="text" name="card-name" placeholder="Name on Card" required />
+                    </div>
+                  </div>
+      
+                  <div class="bor8 m-b-20">
+                    <div class="m-b-12">
+                      <input class="form-control" type="text" name="card-number" placeholder="Card Number" required />
+                    </div>
+                  </div>
+      
+                  <div class="row">
+                    <div class="col-sm-6 p-b-30">
+                      <div class="bor8">
+                        <div class="m-b-12">
+                          <input class="form-control" type="text" name="exp-month" placeholder="MM" required />
+                        </div>
+                      </div>
+                    </div>
+      
+                    <div class="col-sm-6 p-b-30">
+                      <div class="bor8">
+                        <div class="m-b-12">
+                          <input class="form-control" type="text" name="exp-year" placeholder="YY" required />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+      
+                  <div class="bor8 m-b-20">
+                    <div class="m-b-12">
+                      <input class="form-control" type="text" name="cvv" placeholder="CVV" required />
+                    </div>
+                  </div>
+      
+                  <div class="flex-w">
+                    <button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04" type="submit">
+                      Place Order
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+      
+          <div class="col-lg-5 m-lr-auto m-b-50">
+            <div class="m-lr-0-xl">
+              <div class="wrap-table-shopping-cart">
+                <h4 class="mtext-109 cl2 p-b-30">Order Summary</h4>
+                
+                <ul class="header-cart-wrapitem w-full">
+                  <li class="header-cart-item flex-w flex-t m-b-12">
+                    <div class="header-cart-item-img">
+                      <img src="./user/images/item-cart-01.jpg" alt="IMG" />
+                    </div>
+      
+                    <div class="header-cart-item-txt p-t-8">
+                      <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">White Shirt Pleat</a>
+                      <span class="header-cart-item-info">1 x $19.00</span>
+                    </div>
+                  </li>
+                </ul>
+      
+                <div class="header-cart-total w-full p-tb-40">
+                  Total: $75.00
+                </div>
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
               </div>
             </div>
           </div>
         </div>
       </div>
+<<<<<<< HEAD
     </div>
+=======
+      <script>
+        document.getElementById('show-address-form').addEventListener('click', function() {
+          document.getElementById('address-form-section').style.display = 'block';
+          // document.getElementById('existing-address-section').style.display = 'none';
+        });
+      </script>      
+
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
 
     <!-- Footer -->
     <footer class="bg3 p-t-75 p-b-32">
@@ -983,6 +1156,7 @@
         <i class="zmdi zmdi-chevron-up"></i>
       </span>
     </div>
+<<<<<<< HEAD
 
     <script>
       function submitForm(productId, size) {
@@ -1028,6 +1202,28 @@ document.querySelectorAll(".cancelEdit").forEach((button) => {
         }
       }
     </script>
+=======
+    
+<script>
+  function submitForm(productId, size) {
+    document.getElementById("quantityForm-" + productId + "-" + size).submit();
+  }
+
+  function incrementQuantity(productId, size) {
+    const input = document.querySelector(`#quantityForm-${productId}-${size} input[name="quantity"]`);
+    input.value = parseInt(input.value) + 1;
+    submitForm(productId, size);
+  }
+
+  function decrementQuantity(productId, size) {
+    const input = document.querySelector(`#quantityForm-${productId}-${size} input[name="quantity"]`);
+    if (input.value > 1) {
+      input.value = parseInt(input.value) - 1;
+      submitForm(productId, size);
+    }
+  }
+</script>
+>>>>>>> e9c9381d13ebbf9c6e051e41ec94d6b1023a15a3
 
     <!--===============================================================================================-->
     <script src="./user/vendor/jquery/jquery-3.2.1.min.js"></script>
