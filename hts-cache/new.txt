@@ -1,0 +1,3 @@
+date	size'/'remotesize	flags(request:Update,Range state:File response:Modified,Chunked,gZipped)	statuscode	status ('servermsg')	MIME	Etag|Date	URL	localfile	(from URL)
+14:37:59	6763/6763	---MCZ	403	error ('Forbidden')	text/html	date:Tue,%2011%20Jun%202024%2009:07:59%20GMT	https://wpthemesgrid.com/robots.txt		(from )
+14:37:59	15449/15449	---MCZ	403	error ('Forbidden')	text/html	date:Tue,%2011%20Jun%202024%2009:07:59%20GMT	https://wpthemesgrid.com/themes/free/eshop/	C:/Users/shibi/Downloads/ecommerce/wpthemesgrid.com/themes/free/eshop/index.html	(from )

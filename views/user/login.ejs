@@ -1,0 +1,151 @@
+<style>
+  * {
+    margin: 0px;
+    padding: 0px;
+    border-style: none;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  h1 {
+    color: #6796c7;
+  }
+  .outer_box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #6796c7;
+  }
+  .center_box {
+    width: 70vw;
+    height: 80vh;
+    background-color: white;
+    display: flex;
+    border-radius: 10px;
+    box-shadow: 0px 5px 42px #1a324c;
+    overflow: hidden;
+  }
+  .inner_left {
+    width: 35vw;
+    height: 80vh;
+    background-color: black;
+    border-right: 1px solid black;
+  }
+  .inner_left img {
+    width: 35vw;
+    height: 80vh;
+  }
+  .inner_right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 35vw;
+    height: 80vh;
+    /* background-color: blueviolet; */
+  }
+  .inner_right form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20vw;
+    height: 35vh;
+    margin: 20px;
+  }
+  .inner_right label {
+    color: #085eba;
+  }
+  .inner_right form input {
+    height: 8vh;
+    border-radius: 5px;
+    border: 2px solid #6796c7;
+    padding-left: 10px;
+  }
+  .button {
+    background-color: green;
+  }
+  #username_icon {
+    padding-left: 25px;
+    background: url("https://img.icons8.com/?size=100&id=85147&format=png&color=000000")
+      no-repeat left;
+    background-size: 20px;
+  }
+  #password_icon {
+    padding-left: 25px;
+    background: url("https://img.icons8.com/?size=100&id=rlA5mqN0V82a&format=png&color=000000")
+      no-repeat left;
+    background-size: 20px;
+  }
+  .error-message {
+      color: red;
+      margin-bottom: 20px;
+    }
+    .inner_right span a {
+  color: #085eba;
+  text-decoration: none;
+}
+
+.inner_right span a:hover {
+  text-decoration: underline;
+}
+
+</style>
+
+<body>
+  <div class="outer_box">
+    <div class="center_box">
+      <div class="inner_left">
+        <img src="/img/loginImage.jpg" alt="Preview Image" />
+      </div>
+      <div class="inner_right">
+        <h1>Welcome</h1>
+        <% if (errorMessage) { %>
+          <div class="error-message">
+            <%= errorMessage %>
+          </div>
+        <% } %>
+        <form
+          id="loginForm"
+          action="/user/login"
+          method="post"
+          onsubmit="return validateForm()"
+        >
+          <label for="email">Email</label>
+          <input
+            id="username_icon"
+            name="email"
+            type="email"
+            value="shibilyk11@gmail.com"
+            placeholder="Username or email"
+            required
+          />
+          <label for="password">Password</label>
+          <input
+            id="password_icon"
+            name="password"
+            value="9747286475kK@"
+            type="password"
+            placeholder="Password"
+            required
+          />
+          <input class="button" type="submit" value="Sign in" />
+        </form>
+        <span>Don't have an account? <a href="/user/register">Create an account</a></span><br>
+        <span><a href="/user/forget">Forgot Password?</a></span>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  function validateForm() {
+    const email = document.getElementById("username_icon").value;
+    const password = document.getElementById("password_icon").value;
+
+    if (!email || !password) {
+      alert("Please fill in both fields.");
+      return false;
+    }
+    // Additional client-side validation can be added here
+    return true;
+  }
+</script>

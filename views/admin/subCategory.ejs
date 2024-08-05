@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Example</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .fbody {
+        width: 100vw;
+        height: 100vh;
+        background-color: #ffffff;
+        display: flex;
+      }
+      .side_bar {
+        width: 20vw;
+        height: 100vh;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: auto;
+      }
+      .top_bar {
+        width: 80vw;
+        height: 12vh;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #ffffff;
+      }
+      .content {
+        width: 80vw;
+        height: 88vh;
+        background-color: #eff4f8;
+        border-radius: 10px 0px 0px 0px;
+        overflow: auto;
+      }
+      .side_bar img {
+        width: 100px;
+        height: 100px;
+      }
+      #li {
+        width: 15vw;
+        display: flex;
+        flex-direction: column;
+        align-items: space-between;
+      }
+      #li a {
+        height: 50px;
+        display: flex;
+        align-items: center;
+      }
+      #li i {
+        margin-right: 10px;
+      }
+      .adminProfile{
+          padding-right: 30px;
+      }
+      .error-message {
+        color: #e53e3e; /* Red color */
+        font-size: 0.875rem; /* 14px */
+        margin-top: 0.25rem; /* 4px */
+      }
+    </style>
+</head>
+<body>
+      <div class="fbody">
+      <div class="side_bar">
+        <a href=""><img src="img/e-commerce-logo.png" alt="" /></a>
+        <div id="li">
+          <a href=""><i class="fa-solid fa-gauge"></i>Dashboard</a>
+          <a href=""><i class="fa-solid fa-cart-shopping"></i>Product</a>
+          <a href="/showCategory"><i class="fa-solid fa-layer-group"></i>Category</a>
+          <a href=""><i class="fa-regular fa-user"></i>Users</a>
+        </div>
+      </div>
+      <div class="rside">
+        <div class="top_bar">
+          <input type="text" placeholder="Search" />
+          <div class="adminProfile">
+            <a href="">profile</a>
+          </div>
+        </div>
+        <div class="content">
+          <div class="flex justify-center items-center min-h-screen">
+            <form action="/subCategory" method="post" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-md max-w-md">
+              <h2 class="text-2xl font-bold mb-6 text-center">Upload Sub Category</h2>
+              <% if (error) { %>
+                <div class="error-message text-red-500 mb-4"><%= error %></div>
+              <% } %>
+              <% if (success) { %>
+                <div class="success-message text-green-500 mb-4"><%= success %></div>
+              <% } %>
+              <div class="mb-4">
+                <label for="image" class="block font-bold mb-2">Image</label>
+                <input type="file" name="image" id="image" accept="image/png,image/jpeg,.jpeg,.jpg" required class="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="category">Category</label>
+                <select id="category" name="category" required class="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="" disabled selected>Select a category</option>
+                  <% category.forEach(element => { %>
+                    <option value="<%= element.category %>"><%= element.category %></option>
+                  <% }) %>
+                </select>  
+              </div>
+              <div class="mb-6">
+                <label for="SubCategory" class="block font-bold mb-2">SubCategory</label>
+                <input type="text" name="subCategory" id="SubCategory" class="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+              </div>
+              <div class="flex justify-center">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Submit</button>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+</body>
+</html>

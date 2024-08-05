@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-const Product = require('../model/admin/productModel');
+const {Product,category,subcategory} = require('../model/admin/productModel');
 
 const connectDB = async () => {
     try {
@@ -12,6 +12,7 @@ const connectDB = async () => {
     } catch (err) {
         console.error(err.message);
         process.exit(1);
+    
     }
 };
 

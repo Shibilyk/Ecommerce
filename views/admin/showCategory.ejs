@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>OnShop</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+      defer
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .fbody {
+        width: 100vw;
+        height: 100vh;
+        background-color: #ffffff;
+        display: flex;
+      }
+      .side_bar {
+        width: 20vw;
+        height: 100vh;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: auto;
+        border-right: 1px solid #d1d5db;
+      }
+      .top_bar {
+        width: 80vw;
+        height: 12vh;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #ffffff;
+        border-bottom: 1px solid #d1d5db;
+      }
+      .content {
+        width: 80vw;
+        height: 88vh;
+        background-color: #eff4f8;
+        border-radius: 10px 0px 0px 0px;
+        overflow: auto;
+        padding: 1.5rem;
+      }
+      .side_bar img {
+        width: 100px;
+        height: 100px;
+      }
+      #li {
+        width: 15vw;
+        display: flex;
+        flex-direction: column;
+      }
+      #li a {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        color: #4b5563;
+        transition: background-color 0.3s ease;
+        border-radius: 0.25rem;
+        margin: 0.25rem 0;
+      }
+      #li a:hover {
+        background-color: #e2e8f0;
+      }
+      #li i {
+        margin-right: 10px;
+        color: #6b7280;
+        width: 1.5rem;
+        text-align: center;
+      }
+      .adminProfile {
+        padding-right: 30px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #d1d5db;
+        padding: 0.5rem;
+        text-align: left;
+      }
+      th {
+        background-color: #f3f4f6;
+        font-weight: bold;
+      }
+      td {
+        vertical-align: top;
+      }
+      .action-links a {
+        color: #4b5563;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        margin-left: 0.5rem;
+      }
+      .action-links a:hover {
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="fbody">
+      <div class="side_bar">
+        <a href="#"
+          ><img src="img/e-commerce-logo.png" alt="E-commerce Logo"
+        /></a>
+        <div id="li">
+          <a href=""><i class="fa-solid fa-gauge"></i>Dashboard</a>
+          <a href="/showProduct"><i class="fa-solid fa-cart-shopping"></i>Product</a>
+          <a href="/showCategory"
+            ><i class="fa-solid fa-layer-group"></i>Category</a
+          >
+          <a href="#"><i class="fa-regular fa-user"></i>Users</a>
+        </div>
+      </div>
+      <div class="rside">
+        <div class="top_bar">
+          <input
+            type="text"
+            placeholder="Search"
+            class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+          />
+          <div class="adminProfile">
+            <a href="#" class="text-purple-600 hover:text-purple-800"
+              >Profile</a
+            >
+          </div>
+        </div>
+        <div class="content bg-gray-100 p-6">
+          <div class="mb-6 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-purple-800">Categories</h1>
+            <div class="space-x-4">
+              <a
+                href="/category"
+                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+              >
+                Add Category
+              </a>
+              <a
+                href="/subCategory"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+              >
+                Add Subcategory
+              </a>
+            </div>
+          </div>
+
+          <% category.forEach(element => { %>
+          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-xl font-bold text-purple-800">
+                <%= element.category %>
+              </h2>
+              <div class="action-buttons space-x-2">
+                <a
+                  href="javascript:void(0);"
+                  class="delete-category-btn text-red-500 hover:text-red-700 font-medium transition duration-300"
+                  data-id="<%=element._id%>"
+                  >Delete</a
+                >
+                <a
+                  href="/updateCategory/<%=element._id%>"
+                  class="text-blue-500 hover:text-blue-700 font-medium transition duration-300"
+                  >Update</a
+                >
+              </div>
+            </div>
+            <div class="space-y-4">
+              <% element.subCategory.forEach((subElement, index) => { %>
+              <div
+                class="bg-gray-50 rounded-lg p-4 hover:shadow-md transition duration-300"
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-4">
+                    <span class="text-gray-500 font-semibold"
+                      ><%= index + 1 %>.</span
+                    >
+                    <img
+                      src="./images/<%= subElement.img  %>"
+                      alt="<%= subElement.subCategory %>"
+                      class="h-12 w-12 object-cover rounded-full"
+                    />
+                    <p class="text-gray-800 font-medium">
+                      <%= subElement.subCategory %>
+                    </p>
+                  </div>
+                  <div class="action-buttons space-x-2">
+                    <a
+                      href="javascript:void(0);"
+                      class="delete-subcategory-btn text-red-500 hover:text-red-700 font-medium transition duration-300"
+                      data-id="<%= subElement._id %>"
+                      >Delete</a
+                    >
+                    <a
+                      href="/subCategoryUpdate/<%= subElement._id %>"
+                      class="text-blue-500 hover:text-blue-700 font-medium transition duration-300"
+                      >Update</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+          <% }) %>
+
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const deleteButtons = document.querySelectorAll(
+                ".delete-category-btn, .delete-subcategory-btn"
+              );
+
+              deleteButtons.forEach((button) => {
+                button.addEventListener("click", function (event) {
+                  event.preventDefault();
+                  const id = this.getAttribute("data-id");
+                  const isCategory = this.classList.contains(
+                    "delete-category-btn"
+                  );
+
+                  Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      const url = isCategory
+                        ? `/deleteCategory/${id}`
+                        : `/subCetagoryDelete/${id}`;
+                      axios
+                        .delete(url)
+                        .then((response) => {
+                          if (response.status === 200) {
+                            Swal.fire(
+                              "Deleted!",
+                              "Your item has been deleted.",
+                              "success"
+                            ).then(() => {
+                              location.reload();
+                            });
+                          } else {
+                            Swal.fire(
+                              "Error!",
+                              "Failed to delete the item.",
+                              "error"
+                            );
+                          }
+                        })
+                        .catch((error) => {
+                          Swal.fire(
+                            "Error!",
+                            "Failed to delete the item.",
+                            "error"
+                          );
+                          console.error(
+                            "Error deleting item:",
+                            error.response ? error.response.data : error.message
+                          );
+                        });
+                    }
+                  });
+                });
+              });
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,124 +1,346 @@
-  <head>
-    <style>
-      * {
-        padding: 0px;
-        margin: 0px;
-      }
-      .full_body {
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-      .form {
-        width: 60vw;
-        height: 90vh;
-      }
-      .form form {
-        display: flex;
-        flex-direction: column;
-      }
-      .form form input {
-        height: 7vh;
-      }
-      select {
-        height: 7vh;
-      }
-      .form form label {
-        padding-top: 10px;
-      }
-      #description {
-        height: 12vh;
-      }
-      form button {
-        height: 7vh;
-        margin-top: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="full_body">
-      <h1>Product</h1>
-      <div class="form">
-        <form action="/home" method="post">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="name" />
+<head>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 
-          <label for="description">Description</label>
-          <input
-            type="text"
-            id="description"
-            name="description"
-            placeholder="description"
-          />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+    .fbody {
+      width: 100vw;
+      height: 100vh;
+      background-color: #ffffff;
+      display: flex;
+    }
+    .side_bar {
+      width: 20vw;
+      height: 100vh;
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: auto;
+    }
+    .top_bar {
+      width: 80vw;
+      height: 12vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #ffffff;
+    }
+    .content {
+      width: 80vw;
+      height: 88vh;
+      background-color: #eff4f8;
+      border-radius: 10px 0px 0px 0px;
+      overflow: auto;
+    }
+    .side_bar img {
+      width: 100px;
+      height: 100px;
+    }
+    #li {
+      width: 15vw;
+      display: flex;
+      flex-direction: column;
+      align-items: space-between;
+      /* height: 30vh;
+          background-color: blue; */
+    }
+    #li a {
+      height: 50px;
+      display: flex;
+      align-items: center;
+    }
+    #li i {
+      margin-right: 10px;
+    }
+    .adminProfile{
+        padding-right: 30px;
+    }
+        .show-image {
+            width: 200px;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+  </style>
+</head>
 
-          <label for="category">Category</label>
-          <select id="category" name="category">
-            <option value="">Select a category</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Fashion">Fashion</option>
-            <option value="Home & Garden">Home & Garden</option>
-            <option value="Beauty & Health">Beauty & Health</option>
-            <option value="Sports & Outdoors">Sports & Outdoors</option>
-            <option value="Toys & Hobbies">Toys & Hobbies</option>
-          </select>
-          <label for="subcategory">Subcategory:</label>
-          <select id="subcategory" name="subcategory">
-            <!-- Subcategory options will be dynamically populated here -->
-          </select>
-          <label for="price">Price</label>
-          <input type="number" id="price" name="price" placeholder="price" />
+<%- include('../partials/adminSideNav') %>
 
-          <label for="stock_quantity">Stock Quantity</label>
-          <input
-            type="number"
-            id="stock_quantity"
-            name="stock_quantity"
-            placeholder="stock quantity"
-          />
-
-          <label for="image">Image</label>
-          <input type="file" id="image" name="image" placeholder="image" />
-
-          <button type="submit">Submit</button>
-        </form>
+      <div class="content">
+        <div class="p-8 bg-blue-300 flex justify-center items-center">
+          <div class="form bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+            <!-- <h1 class="text-3xl font-bold text-center">Product</h1> -->
+            <form action="/product" method="post" class="space-y-6" enctype="multipart/form-data">
+              <div class="grid grid-cols-2 gap-4 bg-dark-green p-4 rounded">
+                <div class="row-span-3 grid grid-cols-2 gap-4">
+                  <div class="show-image truncate bg-gray-100 border-2 border-gray-300 rounded h-48 flex items-center justify-center">
+                    <img  id="imageDisplay" style="display: none; max-width: 100%; height: auto;">
+                  </div>
+                  <div class="show-image bg-gray-100  border-2 border-gray-300 rounded h-48 flex items-center justify-center">
+                    <div id="slideshow-container" class="relative flex items-center	 h-full w-full rounded-lg shadow-lg overflow-hidden">
+                      <button class="prev absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-800 focus:outline-none" onclick="plusSlidesAndPreventDefault(event, -1)">&#10094;</button>
+                      <button class="next absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-800 focus:outline-none" onclick="plusSlidesAndPreventDefault(event, 1)">&#10095;</button>
+                  </div>
+                  </div>
+                  <input type="file" id="mainImage" name="mainImage" accept=".jpg, .jpeg, .png" class="hidden" />
+                  <button type="button" onclick="document.getElementById('mainImage').click()" class="bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2">
+                     Main Image
+                  </button>
+                  
+                  <input type="file" id="images" name="images" class="hidden" multiple accept=".jpg, .jpeg, .png" />
+                  <button type="button" onclick="document.getElementById('images').click()" class="bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2">
+                     Images
+                  </button>
+                </div>
+                <div>
+                  <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name</label>
+                  <input type="text" id="name" name="name" placeholder="Enter name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required/>
+                </div>
+                <div >
+                  <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+                  <textarea id="description" name="description" placeholder="Enter description" class="shadow resize-none h-20 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+                </div>
+                <div>
+                  <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category</label>
+                  <select id="category" name="category" onchange="fetchCategory()" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    <option value="">Select a category</option>
+                    <% category.forEach(element => {%>
+                      <option value="<%= element._id%>"><%= element.category %></option>
+                   <% }); %>
+                  </select>
+                </div>
+                <div>
+                  <div class="flex space-x-2">
+                    <div>
+                      <label for="price" class="block text-gray-700 text-sm font-bold mb-2">Price</label>
+                    <input type="number" id="price" name="price" placeholder="Enter price"  class="shadow appearance-none border rounded w-11/12 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required/>
+                    </div>
+                    <div>
+                      <label for="offerPrice" class="block text-gray-700 text-sm font-bold mb-2">Offer Price</label>
+                    <input type="number" id="offerPrice" name="offerPrice" placeholder="Enter offer price"  class="shadow appearance-none border rounded w-1/1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required/>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label for="subcategory" class="block text-gray-700 text-sm font-bold mb-2">Subcategory</label>
+                  <select id="subcategory" name="subcategory" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"required>
+                    <option value="">Select a subcategory</option>
+                  </select>
+                </div>
+                <div class="max-w-lg w-full bg-white p-6 rounded-lg shadow-md">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <p class="font-bold mb-2">Size</p>
+            <div>
+                <input type="checkbox" id="sizeXS" name="sizes" value="XS" class="mr-2">
+                <label for="sizeXS">XS</label>
+            </div>
+            <div>
+                <input type="checkbox" id="sizeS" name="sizes" value="S" class="mr-2">
+                <label for="sizeS">S</label>
+            </div>
+            <div>
+                <input type="checkbox" id="sizeM" name="sizes" value="M" class="mr-2">
+                <label for="sizeM">M</label>
+            </div>
+            <div>
+                <input type="checkbox" id="sizeL" name="sizes" value="L" class="mr-2">
+                <label for="sizeL">L</label>
+            </div>
+            <div>
+                <input type="checkbox" id="sizeXL" name="sizes" value="XL" class="mr-2">
+                <label for="sizeXL">XL</label>
+            </div>
+        </div>
+        <div>
+            <p class="font-bold mb-2">Color</p>
+            <div>
+                <input type="checkbox" id="colorRed" name="colors" value="Red" class="mr-2">
+                <label for="colorRed">Red</label>
+            </div>
+            <div>
+                <input type="checkbox" id="colorGreen" name="colors" value="Green" class="mr-2">
+                <label for="colorGreen">Green</label>
+            </div>
+            <div>
+                <input type="checkbox" id="colorBlue" name="colors" value="Blue" class="mr-2">
+                <label for="colorBlue">Blue</label>
+            </div>
+            <div>
+                <input type="checkbox" id="colorYellow" name="colors" value="Yellow" class="mr-2">
+                <label for="colorYellow">Yellow</label>
+            </div>
+            <div>
+                <input type="checkbox" id="colorBlack" name="colors" value="Black" class="mr-2">
+                <label for="colorBlack">Black</label>
+            </div>
+            <div>
+                <input type="checkbox" id="colorWhite" name="colors" value="White" class="mr-2">
+                <label for="colorWhite">White</label>
+            </div>
+            <div>
+                <input type="checkbox" id="colorPink" name="colors" value="Pink" class="mr-2">
+                <label for="colorPink">Pink</label>
+            </div>
+            <div>
+                <input type="checkbox" id="colorOrange" name="colors" value="Orange" class="mr-2">
+                <label for="colorOrange">Orange</label>
+            </div>
+            <div>
+                <input type="checkbox" id="colorPurple" name="colors" value="Purple" class="mr-2">
+                <label for="colorPurple">Purple</label>
+            </div>
+            <div>
+                <input type="checkbox" id="colorBrown" name="colors" value="Brown" class="mr-2">
+                <label for="colorBrown">Brown</label>
+            </div>
+            <div>
+                <input type="checkbox" id="colorGray" name="colors" value="Gray" class="mr-2">
+                <label for="colorGray">Gray</label>
+            </div>
+        </div>
+    </div>
+</div>
+               
+                <div>
+                  <label for="stock_quantity" class="block text-gray-700 text-sm font-bold mb-2">Stock Quantity</label>
+                  <input type="number" id="stock_quantity" name="stock_quantity" placeholder="Enter stock quantity" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required/>
+                </div>
+              </div>
+              <div class="flex items-center justify-between mt-4">
+                <button type="submit" id="submition" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                  Submit
+                </button>
+              </div>
+              <div class="hidden text-red-600 border border-red-600 bg-red-100 p-4 mt-4 rounded text-center" id="photoError">
+                Photos not sent. Please try again.
+            </div>
+            </form>
+            
+          </div>
+        </div>
       </div>
     </div>
-  </body>
+  </div>
+
   <script>
-    const subcategories = {
-      "Sports & Outdoors": [
-        "Sports Equipment",
-        "Outdoor Gear",
-        "Fitness Equipment",
-        "Apparel",
-        "Footwear"
-      ],
-    };
 
-    function updateSubcategories() {
-      const categorySelect = document.getElementById('category');
-      const subcategorySelect = document.getElementById('subcategory');
-      const selectedCategory = categorySelect.value;
+document.getElementById('submition').addEventListener('click',(e)=>{
+  
+  const mainImage = document.getElementById("mainImage");
+  const images = document.getElementById('images');
+if(mainImage.files.length === 0 || images.files.length === 0){
+  document.getElementById('photoError').classList.remove('hidden');
+  e.preventDefault()
+  }
+ 
+})
 
-      // Clear previous subcategory options
-      subcategorySelect.innerHTML = '';
 
-      if (selectedCategory && subcategories[selectedCategory]) {
-        subcategories[selectedCategory].forEach(subcategory => {
-          const option = document.createElement('option');
-          option.value = subcategory;
-          option.textContent = subcategory;
-          subcategorySelect.appendChild(option);
+
+
+
+/////////////////////////////////////////////////////////
+        let slideIndex = 1;
+        let slides = [];
+
+        document.getElementById('images').addEventListener('change', function(event) {
+            const files = event.target.files;
+            const slideshowContainer = document.getElementById('slideshow-container');
+
+            // Clear existing slides and reset the slides array
+            slideshowContainer.innerHTML = '<button class="prev absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-800 focus:outline-none" onclick="plusSlidesAndPreventDefault(event, -1)">&#10094;</button><button class="next absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-800 focus:outline-none" onclick="plusSlidesAndPreventDefault(event, 1)">&#10095;</button>';
+            slides = [];
+
+            // Load new slides
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('slides', 'w-full');
+                    slideshowContainer.appendChild(img);
+                    slides.push(img);
+                    if (slides.length === 1) {
+                        showSlides(slideIndex);
+                    }
+                };
+                
+                reader.readAsDataURL(file);
+            }
         });
-      } else {
-        // If no valid category is selected, provide a default option
-        const option = document.createElement('option');
-        option.value = '';
-        option.textContent = 'Select a subcategory';
-        subcategorySelect.appendChild(option);
-      }
+
+        function plusSlidesAndPreventDefault(event, n) {
+            event.preventDefault();
+            plusSlides(n);
+        }
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function showSlides(n) {
+            if (slides.length === 0) return;
+
+            if (n > slides.length) { slideIndex = 1; }
+            if (n < 1) { slideIndex = slides.length; }
+
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = 'none';
+            }
+            slides[slideIndex - 1].style.display = 'block';
+        }
+
+
+//////////////////////////////////////////////////////////////
+
+
+    const show_image = document.getElementById('imageDisplay');
+    const fileInput = document.getElementById("mainImage");
+    fileInput.onchange = ()=>{
+      const file = fileInput.files[0];
+        if (file) {
+          show_image.style.display = 'block';
+            show_image.src = URL.createObjectURL(file);
+        }   
+       };
+ 
+    const fetchCategory = ()=>{
+      const category = document.getElementById("category").value;
+      fetch(`http://localhost:2001/getSubCategory/${category}`)
+      .then(response=> {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    const subcategorySelect = document.getElementById("subcategory");
+        subcategorySelect.innerHTML = '<option value="">Select a subcategory</option>';
+        data.forEach(subCategory => {
+            const option = document.createElement("option");
+            option.value = subCategory._id; 
+            option.textContent = subCategory.subCategory; 
+            subcategorySelect.appendChild(option);  })
+    })
+  .catch(error => {
+    console.error('There has been a problem with your fetch operation:', error);
+  });
     }
   </script>
+</body>
+</html>
