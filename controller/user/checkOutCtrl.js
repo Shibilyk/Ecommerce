@@ -5,16 +5,15 @@ const mongoose = require("mongoose");
 module.exports = {
   checkOutPage: async (req, res) => {
     const userId = req.session.user._id;
-    const address = await checkOutAddress.findOne({userId})
-    console.log(address);
-    
+    let address = await checkOutAddress.findOne({ userId });
+
     const cart = await Cart.aggregate([
       { $match: { userId: new mongoose.Types.ObjectId(userId) } },
       { $unwind: "$items" },
       {
         $lookup: {
           from: "products",
-          localField: "items.productId", // Correctly reference the productId field inside items
+          localField: "items.productId",
           foreignField: "_id",
           as: "productDetails",
         },
@@ -23,7 +22,11 @@ module.exports = {
     ]);
     const total = cart[0].total;
 
-    res.render("./user/checkOut", { cart: cart, total: total,address:address });
+    res.render("./user/checkOut", {
+      cart: cart,
+      total: total,
+      address: address ? address.addresses : [],
+    });
   },
   razorpayPost: async (req, res) => {
     const options = {
@@ -43,29 +46,68 @@ module.exports = {
     try {
       const { name, phone, pincode, locality, address, city, state } = req.body;
       const userId = req.session.user._id;
-  
-      if (!name || !phone || !pincode || !locality || !address || !city || !state) {
-        return res.status(400).json({ error: 'All address fields are required' });
+
+      if (
+        !name ||
+        !phone ||
+        !pincode ||
+        !locality ||
+        !address ||
+        !city ||
+        !state
+      ) {
+        return res
+          .status(400)
+          .json({ error: "All address fields are required" });
       }
-  
+
       const user = await checkOutAddress.findOne({ userId });
       if (!user) {
-        // Create new user if not found
         const newUser = new checkOutAddress({
           userId,
-          addresses: [{ name, phone, pincode, locality, address, city, state }]
+          addresses: [{ name, phone, pincode, locality, address, city, state }],
         });
         await newUser.save();
         return res.status(201).json(newUser);
       } else {
-        // Add new address to existing user's addresses
-        user.addresses.push({ name, phone, pincode, locality, address, city, state });
+        user.addresses.push({
+          name,
+          phone,
+          pincode,
+          locality,
+          address,
+          city,
+          state,
+        });
         await user.save();
-        return res.status(201).json(user);
+        return res.redirect("/check-out");
       }
     } catch (error) {
-      console.error('Error saving address:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      console.error("Error saving address:", error);
+      res.status(500).json({ error: "Internal Server Error" });
     }
+  },
+  editAddress: async (req, res) => {
+    const { name, phone, pincode, locality, address, city, state } = req.body;
+    const userId = req.session.user._id;
+    const addressId = req.params.id;
+    const userAddress = await checkOutAddress.findOne({ userId: userId });
+    const index = userAddress.addresses.findIndex(
+      (element) => element._id == addressId
+    );
+    userAddress.addresses[index].name = name;
+    userAddress.addresses[index].phone = phone;
+    userAddress.addresses[index].pincode = pincode;
+    userAddress.addresses[index].locality = locality;
+    userAddress.addresses[index].address = address;
+    userAddress.addresses[index].city = city;
+    userAddress.addresses[index].state = state;
+
+    const result = await checkOutAddress.updateOne(
+      { userId },
+      { addresses: userAddress.addresses }
+    );
+
+    res.redirect("/check-out");
   },
 };

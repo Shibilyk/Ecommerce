@@ -2,15 +2,16 @@
 const express = require('express');
 const router = express.Router();
 const razorpayInstance = require('../../config/razorpay');
-const {checkOutPage,addressForm,razorpayPost} = require("../../controller/user/checkOutCtrl")
+const {checkOutPage,addressForm,razorpayPost,editAddress} = require("../../controller/user/checkOutCtrl")
 
 router.get('/check-out',checkOutPage)
 .post('/address-form',addressForm)
+.post('/edit-address/:id',editAddress)
 router.post('/create-order',razorpayPost);
 // routes/payment.js
 router.post('/capture-payment', async (req, res) => {
     const { payment_id, order_id, signature } = req.body;
-
+ 
     // Verify signature (optional but recommended)
     const crypto = require('crypto');
     const generatedSignature = crypto.createHmac('sha256', razorpayInstance.key_secret)

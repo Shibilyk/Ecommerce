@@ -140,38 +140,27 @@ module.exports = {
     const productId = req.params.id;
     const userId = req.session.user._id;
     const intQuantity = parseInt(quantity);
-    
 
     try {
-      console.log(userId);
-      
-      const findCart =await Cart.findOne({ userId: new mongoose.Types.ObjectId(userId) });
-      console.log(findCart);
 
-      const index = findCart.items.findIndex(element =>element.productId == productId && element.size == size)
-      
-      console.log(index);
-      
+      const findCart = await Cart.findOne({
+        userId: new mongoose.Types.ObjectId(userId),
+      });
+
+      const index = findCart.items.findIndex(
+        (element) => element.productId == productId && element.size == size
+      );
+      findCart.items[index].quantity = intQuantity;
+
       const filter = {
         userId: new mongoose.Types.ObjectId(userId),
-        "items.productId": new mongoose.Types.ObjectId(productId),
-        "items.size": size,
       };
-
       const update = {
-        $set: {
-          "items.$.quantity": intQuantity,
-        },
+        items: findCart.items,
       };
-
-     
-
       const result = await Cart.updateOne(filter, update);
-      // console.log(result);
-
       const total = await Cart.aggregate([
         { $match: { userId: new mongoose.Types.ObjectId(userId) } },
-
         {
           $unwind: "$items",
         },
