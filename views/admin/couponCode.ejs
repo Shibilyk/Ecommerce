@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="/css/couponCode.css" />
+<%- include('../partials/adminSideNav') %>
+<div class="body">
+  <div class="coupon-container">
+    <h1>Apply Coupon Code</h1>
+    <form action="/admin/addCouponCode" method="post">
+      <div class="form-group">
+        <label for="couponName">Coupon Code:</label>
+        <input
+          type="text"
+          id="couponName"
+          name="couponName"
+          placeholder="Enter coupon code"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="percentage">Discount Percentage:</label>
+        <input
+          type="number"
+          id="percentage"
+          name="percentage"
+          placeholder="Enter discount %"
+          min="1"
+          max="100"
+          required
+        />
+      </div>
+      <button type="submit">Apply Coupon</button>
+    </form>
+  </div>
+</div>

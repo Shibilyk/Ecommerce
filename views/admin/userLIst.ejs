@@ -1,0 +1,121 @@
+<link rel="stylesheet" href="/css/userlist.css" />
+<%- include('../partials/adminSideNav') %>
+<div class="main-container">
+  <table class="table">
+    <tr>
+      <th>name</th>
+      <th>email</th>
+      <th>status</th>
+      <th>usertype</th>
+      <th>action</th>
+    </tr>
+    <% users.forEach(element => { %>
+
+    <tr>
+      <td><%= element.name %></td>
+      <td><%= element.email %></td>
+      <td><%= element.status %></td>
+      <td>
+        <div class="userType">
+          <p><%= element.usertype %></p>
+          <button
+            class="green"
+            onclick="changeUserType('<%= element._id %>','<%= element.usertype %>')"
+          >
+            change
+          </button>
+        </div>
+      </td>
+      <td>
+        <button
+          class="<%= element.status === 'active' ? '' : 'green' %>"
+          onclick="blockAccount('<%= element._id %>','<%= element.status %>')"
+        >
+          <%= element.status === 'active' ? 'BLOCK' : 'ACTIVE' %>
+        </button>
+      </td>
+    </tr>
+    <% }) %>
+  </table>
+</div>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  const changeUserType = (id, usertype) => {
+    swal({
+      title: `Are you sure you want to change usertype from ${usertype} to ${
+        usertype === "user" ? "admin" : "user"
+      } ?`,
+      buttons: ["Cancel", "Confirm"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        fetch("/admin/change-userType", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: id,
+            usertype: usertype,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+
+            location.reload();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            swal("Error blocking user!", {
+              icon: "error",
+            });
+          });
+      } else {
+        swal("Action cancelled!", {
+          icon: "info",
+        });
+      }
+    });
+  };
+  const blockAccount = (id, currentStatus) => {
+    console.log(id + "   " + currentStatus);
+
+    swal({
+      title: `Are you sure you want to ${
+        currentStatus === "active" ? "block" : "unblock"
+      } this user ?`,
+      buttons: ["Cancel", "Confirm"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        fetch("/admin/userBlock", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: id,
+            status: currentStatus,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+
+            location.reload();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            swal("Error blocking user!", {
+              icon: "error",
+            });
+          });
+      } else {
+        swal("Action cancelled!", {
+          icon: "info",
+        });
+      }
+    });
+  };
+</script>

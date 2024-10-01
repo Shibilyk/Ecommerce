@@ -1,4 +1,5 @@
 const Cart = require("../../model/user/cartModel");
+const Wishlish = require("../../model/user/wishList");
 const mongoose = require("mongoose");
 
 module.exports = {
@@ -129,8 +130,14 @@ module.exports = {
       item,
       product: productDetailsMap[item.productId.toString()],
     }));
+    const wishlish = await Wishlish.findOne({ user: userId });
+    let wishlishCount = 0;
+    if (wishlish && wishlish.products.length > 0) {
+      wishlishCount = wishlish.products.length;
+    }
 
     res.render("./user/shoping-cart", {
+      wishlishCount: wishlishCount,
       cart: cartWithProducts,
       total: total[0].total,
     });
@@ -142,7 +149,6 @@ module.exports = {
     const intQuantity = parseInt(quantity);
 
     try {
-
       const findCart = await Cart.findOne({
         userId: new mongoose.Types.ObjectId(userId),
       });

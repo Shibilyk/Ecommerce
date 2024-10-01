@@ -6,9 +6,7 @@ const nodemailer = require("nodemailer");
 const authmodel = require("../../model/user/userModel");
 const { ObjectId } = require("mongodb");
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require("twilio")(accountSid, authToken);
+
 
 const transporter = nodemailer.createTransport({
   service: process.env.EMAIL_SERVICE,
@@ -195,7 +193,7 @@ module.exports = {
       req.session.user = user;
       if (user.usertype === "admin") {
         req.session.isAdmin = true;
-        return res.redirect("/admin/home");
+        return res.redirect("/dashboard");
       }
       if(req.session.prepage){
         const rout = req.session.prepage

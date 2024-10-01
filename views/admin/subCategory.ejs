@@ -78,22 +78,9 @@
 </head>
 <body>
       <div class="fbody">
-      <div class="side_bar">
-        <a href=""><img src="img/e-commerce-logo.png" alt="" /></a>
-        <div id="li">
-          <a href=""><i class="fa-solid fa-gauge"></i>Dashboard</a>
-          <a href=""><i class="fa-solid fa-cart-shopping"></i>Product</a>
-          <a href="/showCategory"><i class="fa-solid fa-layer-group"></i>Category</a>
-          <a href=""><i class="fa-regular fa-user"></i>Users</a>
-        </div>
-      </div>
-      <div class="rside">
-        <div class="top_bar">
-          <input type="text" placeholder="Search" />
-          <div class="adminProfile">
-            <a href="">profile</a>
-          </div>
-        </div>
+        <%- include('../partials/adminSideNav') %>
+
+      
         <div class="content">
           <div class="flex justify-center items-center min-h-screen">
             <form action="/subCategory" method="post" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-md max-w-md">

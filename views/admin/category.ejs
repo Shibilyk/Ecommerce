@@ -1,24 +1,28 @@
+<link rel="stylesheet" href="/css/category.css">
 <%- include('../partials/adminSideNav') %>
-    <div class="content">
-      <h1>Category</h1>
-      <div class="error-message">
-        <span class="icon"></span>
-        <span><%= error %></span>
+<div class="container">
+  <div class="content">
+    <h1>Category</h1>
+    <div class="error-message">
+      <span class="icon"></span>
+      <span><%= error %></span>
     </div>
-     
-      <form action="/category" id="inputForm" method="post" enctype="multipart/form-data">
-        <input
-          type="text"
-          id="categoryInput"
-          name="category"
-          placeholder="category"
-          required
-        />
 
-        <input type="file" name="image" accept="image/png,image/jpeg,.jpeg,.jpg" required>
-        <input type="submit" value="Submit">
-      </form>
-    </div>
+    <form action="/category" id="inputForm" method="post" enctype="multipart/form-data">
+      <label for="categoryInput">Category Name:</label>
+      <input
+        type="text"
+        id="categoryInput"
+        name="category"
+        placeholder="Enter category"
+        required
+      />
+
+      <label for="imageUpload">Upload Category Image:</label>
+      <input type="file" id="imageUpload" name="image" accept="image/png,image/jpeg,.jpeg,.jpg" required>
+
+      <input type="submit" value="Submit">
+    </form>
   </div>
 </div>
 <script>

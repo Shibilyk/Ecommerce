@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="/css/showCouponCode.css" />
+<%- include('../partials/adminSideNav') %>
+<div class="mainContainer">
+  <table>
+    <tr>
+      <th>COUPON CODE</th>
+      <th>DISCOUNT</th>
+    </tr>
+    <% coupons.forEach(element => { %>
+    <tr>
+      <td><%= element.couponName %></td>
+      <td><%= element.discountPercentage %></td>
+    </tr>
+    <% }) %>
+  </table>
+  <div class="btn-container">
+    <a class="add-btn" href="/admin/addCouponCode">Add New Coupon Code</a>
+  </div>
+</div>

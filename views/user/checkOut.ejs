@@ -252,7 +252,7 @@
             <img src="./user/images/icons/icon-close2.png" alt="CLOSE" />
           </button>
 
-          <form class="wrap-search-header flex-w p-l-15">
+          <form action="/search" method="post" class="wrap-search-header flex-w p-l-15">
             <button class="flex-c-m trans-04">
               <i class="zmdi zmdi-search"></i>
             </button>
@@ -391,6 +391,7 @@
                 >
                   Delivery Address
                 </h5>
+
                 <div>
                   <% address.forEach((element, index) => { %>
                   <label style="display: flex; margin: 32px 0px 0px 0px">
@@ -398,7 +399,8 @@
                       style="margin: 6px 10px auto"
                       type="radio"
                       name="address"
-                      value="element._id"
+                      value="<%= element._id %>"
+                      required
                     />
                     <div id="address-<%= index %>">
                       <div style="display: flex; gap: 30px">
@@ -840,7 +842,13 @@
                             ><%= element.productDetails.name %></a
                           >
                           <span class="header-cart-item-info"
-                            ><%= element.productDetails.price%> x <%=
+                            ><span
+                              style="
+                                text-decoration: line-through;
+                                margin-right: 10px;
+                              "
+                              ><%= element.productDetails.price%></span
+                            ><%= element.productDetails.offerPrice%> x <%=
                             element.items.quantity %> =
                             <span
                               style="
@@ -859,15 +867,172 @@
                       </li>
                       <% }) %>
                     </ul>
-                    <div class="flex items-center mt-5">
-                      <input type="text" id="coupon-code" name="coupon_code" placeholder="Enter coupon code" class="w-64 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 mr-3">
-                      <button type="button" id="apply-coupon" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">Apply</button>
-                  </div>
-                  
-
-                    <div class="header-cart-total w-full p-tb-40">
-                      Total: ₹ <%= total %>
+                    <p id="couponError" style="color: red; display: none">
+                      Invalid coupon
+                    </p>
+                    <div
+                      class="flex items-center mt-4 gap-4"
+                      style="display: flex; gap: 4px"
+                    >
+                      <input
+                        type="text"
+                        id="coupon-code"
+                        name="coupon_code"
+                        placeholder="Enter coupon code"
+                        class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 md:w-64"
+                      />
+                      <button
+                        type="button"
+                        id="apply-coupon"
+                        class=""
+                        style="
+                          background-color: white;
+                          color: black;
+                          border: 2px solid #e7e7e7;
+                          background-color: white; /* Green */
+                          color: black;
+                          padding: 10px 27px;
+                          text-align: center;
+                          text-decoration: none;
+                          display: inline-block;
+                          font-size: 16px;
+                          cursor: pointer;
+                        "
+                      >
+                        Apply
+                      </button>
                     </div>
+                    <div
+                      style="
+                        background-color: white;
+                        border-radius: 0.5rem;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        padding: 1.5rem;
+                      "
+                    >
+                      <h2
+                        style="
+                          color: #2d3748;
+                          font-weight: bold;
+                          font-size: 1.125rem;
+                          margin-bottom: 1rem;
+                        "
+                      >
+                        PRICE DETAILS
+                      </h2>
+                      <div style="margin-top: 1rem">
+                        <div
+                          style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 1rem;
+                          "
+                        >
+                          <span style="color: #718096"
+                            >Price (<%= orginalCart? orginalCart.items.length:"0" %> items)</span
+                          >
+                          <span style="color: #2d3748; font-weight: bold">
+                            ₹<%= total %></span
+                          >
+                        </div>
+                        <div
+                          style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 1rem;
+                          "
+                        >
+                          <span style="color: #718096">Delivery Charges</span>
+                          <span style="color: #38a169; font-weight: bold"
+                            >FREE</span
+                          >
+                        </div>
+                        <span id="priceDetails"></span>
+                        <div
+                          style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 1rem;
+                          "
+                        >
+                          <label for="total">Total Payable</label>
+                          <div style="display: flex">
+                            <span style="font-weight: bold; color: #2d3748"
+                              >₹</span
+                            ><input
+                              type="number"
+                              id="total"
+                              readonly
+                              value="<%= total %>"
+                              step="0.01"
+                              min="0"
+                              style="
+                                width: 100px;
+                                color: #2d3748;
+                                font-weight: bold;
+                                text-align: left;
+                              "
+                            />
+                          </div>
+                        </div>
+
+                        <div
+                          style="
+                            border-top: 1px solid #edf2f7;
+                            padding-top: 1rem;
+                          "
+                        >
+                          <div
+                            style="
+                              display: flex;
+                              justify-content: space-between;
+                              align-items: center;
+                            "
+                          >
+                            <span style="color: #38a169; font-weight: bold"
+                              >Your Total Savings on this order ₹<span
+                                id="saveMassege"
+                                ><%= totalSave %></span
+                              ></span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      id="show-error"
+                      style="
+                        display: none;
+                        color: red;
+                        width: 100%;
+                        text-align: center;
+                      "
+                    ></div>
+                    <button
+                      id="rzp-button1"
+                      data-cart-id="<%= orginalCart %>"
+                      style="
+                        background-color: #04aa6d; /* Green */
+                        border: none;
+                        color: white;
+                        padding: 15px 32px;
+                        text-align: center;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-size: 16px;
+                        margin: 4px 2px;
+                        cursor: pointer;
+                        width: 100%;
+                        margin: 15px 0px;
+                        border-radius: 3px;
+                        box-shadow: 2px 4px 6px 0px #2d3748;
+                      "
+                    >
+                      Place order
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1024,8 +1189,106 @@
       </span>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <script>
+      document.getElementById("rzp-button1").onclick = function (e) {
+        e.preventDefault();
+        const amount = document.getElementById("total").value;
+        var radios = document.getElementsByName("address");
+        var selectedValue = null;
+
+        for (var i = 0; i < radios.length; i++) {
+          if (radios[i].checked) {
+            selectedValue = radios[i].value;
+            break;
+          }
+        }
+
+        const orginalCart = document
+          .getElementById("rzp-button1")
+          .getAttribute("data-cart-id");
+        fetch("/createOrder", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            amount: amount,
+            address: selectedValue,
+            orginalCart: orginalCart,
+          }),
+        })
+          .then((response) => {
+            const error = document.getElementById("show-error");
+            if (!response.ok) {
+              response.text().then((text) => {
+                error.innerText = text || "An error occurred";
+                error.style.display = "block";
+              });
+            } else {
+              return response.json();
+            }
+          })
+          .then((order) => {
+            console.log("Order created successfully:", order);
+            var options = {
+              key: "rzp_test_01wQjnUVk6Gctr", // Enter the Key ID generated from the Dashboard
+              amount: order.amount,
+              currency: "INR",
+              name: "POLO CLUB",
+              description: "Test Transaction",
+              order_id: order.id,
+              method: {
+                netbanking: true,
+                card: true,
+                upi: true, // Ensure UPI is enabled
+                wallet: true,
+              },
+              handler: function (response) {
+                console.log("Payment successful:", response);
+
+                // Now, call the verifyPayment route
+                fetch("/verifyPayment", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    payment_id: response.razorpay_payment_id,
+                    order_id: response.razorpay_order_id,
+                    signature: response.razorpay_signature,
+                    amount: order.amount, // ensure this is correct
+                  }),
+                })
+                  .then((res) => res.json())
+                  .then((data) => {
+                    console.log("Verification response:", data);
+                    alert("Payment verified successfully");
+                  })
+                  .catch((error) => {
+                    console.error("Verification failed:", error);
+                    alert("Payment verification failed. Please try again.");
+                  });
+              },
+              prefill: {
+                name: "John Doe",
+                email: "john.doe@example.com",
+                contact: "9999999999",
+              },
+              theme: {
+                color: "#3399cc",
+              },
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+          })
+          .catch((error) => {
+            console.error("Error creating Razorpay order:", error);
+            // alert("Failed to create order. Please try again later.");
+          });
+      };
+
       // Get the form element
       // const formElement = document.getElementById("address-form-section");
 
@@ -1052,6 +1315,70 @@
       //       console.error("Error submitting form:", error);
       //     });
       // });
+      const applyCouponButton = document.getElementById("apply-coupon");
+      const couponCodeInput = document.getElementById("coupon-code");
+
+      applyCouponButton.addEventListener("click", () => {
+        const couponCode = couponCodeInput.value;
+
+        fetch("/validate-coupon", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ couponCode }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.couponDiscount) {
+              console.log(data);
+
+              const discount = data.couponDiscount;
+              const originalTotal = parseFloat(
+                document.getElementById("total").value
+              );
+              const saveMassege = parseFloat(
+                document.getElementById("saveMassege").innerText
+              );
+
+              const discountPercentage = data.couponDiscount;
+              const discountAmount = (originalTotal * discountPercentage) / 100;
+              const difference = originalTotal - discountAmount;
+
+              const newTotal = originalTotal - discountAmount;
+              document.getElementById("total").value = newTotal.toFixed(2);
+              document.getElementById("saveMassege").innerText = (
+                saveMassege + difference
+              ).toFixed(2);
+              const obj = ` <div
+                                style="
+                                  display: flex;
+                                  justify-content: space-between;
+                                  align-items: center;
+                                  margin-bottom: 1rem;
+                                "
+                              >
+                                <span style="color: #718096">Coupen discount</span>
+                                <span style="color: #38a169; font-weight: bold"
+                                  >${discountPercentage}%</span
+                                >
+                              </div>`;
+
+              const container = document.getElementById("priceDetails");
+              container.insertAdjacentHTML("beforeend", obj);
+
+              document.getElementById("couponError").style.display = "none";
+            } else {
+              console.error("Invalid coupon code");
+
+              // Show error message
+              document.getElementById("couponError").style.display = "block";
+            }
+          })
+          .catch((error) => {
+            console.error("Error validating coupon:", error);
+          });
+      });
 
       document
         .getElementById("show-address-form")

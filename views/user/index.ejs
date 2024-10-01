@@ -98,7 +98,9 @@
             <div class="right-top-bar flex-w h-full">
               <a href="#" class="flex-c-m trans-04 p-lr-25"> Help & FAQs </a>
 
-              <a href="/user/login" class="flex-c-m trans-04 p-lr-25"> My Account </a>
+              <a href="/user/login" class="flex-c-m trans-04 p-lr-25">
+                My Account
+              </a>
 
               <a href="#" class="flex-c-m trans-04 p-lr-25"> EN </a>
 
@@ -151,31 +153,41 @@
                 <i class="zmdi zmdi-search"></i>
               </div>
 
-             <% if (user) { %>
+              <% if (user) { %>
+                <a href="/cart">
               <div
-              class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
-              data-notify="<%= cartCount %>"
-            >
-              <i class="zmdi zmdi-shopping-cart"></i>
-            </div>
-             <% } else { %>
-              <a href="/user/login">
-                <div
-                class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 "
+                class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
+                data-notify="<%= cartCount %>"
               >
                 <i class="zmdi zmdi-shopping-cart"></i>
               </div>
+            </a>
+              <% } else { %>
+              <a href="/user/login">
+                <div
+                  class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11"
+                >
+                  <i class="zmdi zmdi-shopping-cart"></i>
+                </div>
               </a>
-              <% } %>
-
-
+              <% } %> <% if (user) { %>
               <a
-                href="#"
+                href="/wishlist/wishlist"
                 class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-                data-notify="0"
+                data-notify="<%= wishlistCount %>"
               >
                 <i class="zmdi zmdi-favorite-outline"></i>
               </a>
+              <% } else { %>
+              <a href="/user/login">
+                <a
+                  href="/wishlist/wishlist"
+                  class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11"
+                >
+                  <i class="zmdi zmdi-favorite-outline"></i>
+                </a>
+              </a>
+              <% } %>
             </div>
           </nav>
         </div>
@@ -287,10 +299,10 @@
           <button
             class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search"
           >
-            <img src="images/icons/icon-close2.png" alt="CLOSE" />
+            <img src="/user/images/icons/icon-close2.png" alt="CLOSE" />
           </button>
 
-          <form class="wrap-search-header flex-w p-l-15">
+          <form action="/search" method="post" class="wrap-search-header flex-w p-l-15">
             <button class="flex-c-m trans-04">
               <i class="zmdi zmdi-search"></i>
             </button>

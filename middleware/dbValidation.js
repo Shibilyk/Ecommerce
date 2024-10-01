@@ -3,7 +3,8 @@ function validation(req, res, next) {
     next();
   } else {
     if (req.originalUrl !== "/favicon.ico") {
-      req.session.prepage = req.originalUrl || req.url;
+      const requestedUrl = req.originalUrl || req.url;
+      req.session.prepage = requestedUrl;
     }
     res.redirect("/user/login");
   }

@@ -1,11 +1,17 @@
+// const { default: items } = require("razorpay/dist/types/items");
 const Cart = require("../../model/user/cartModel");
 const checkOutAddress = require("../../model/user/checkOut");
 const mongoose = require("mongoose");
+const razorpayInstance = require("../../config/razorpay");
+const Order = require("../../model/user/orderModel");
 
+const razorpay = require("razorpay");
+const { match } = require("assert");
 module.exports = {
   checkOutPage: async (req, res) => {
     const userId = req.session.user._id;
     let address = await checkOutAddress.findOne({ userId });
+    const orginalCart = await Cart.findOne({ userId });
 
     const cart = await Cart.aggregate([
       { $match: { userId: new mongoose.Types.ObjectId(userId) } },
@@ -20,24 +26,102 @@ module.exports = {
       },
       { $unwind: "$productDetails" },
     ]);
-    const total = cart[0].total;
+    const totalSave = cart.reduce((total, element) => {
+      const itemSave =
+        element.items.quantity *
+        (element.productDetails.price - element.productDetails.offerPrice);
+      return total + itemSave;
+    }, 0);
+
 
     res.render("./user/checkOut", {
+      totalSave,
+      orginalCart,
       cart: cart,
-      total: total,
+      total: cart.length ? cart[0].total : 0,
       address: address ? address.addresses : [],
     });
   },
   razorpayPost: async (req, res) => {
+    const amount = parseFloat(req.body.amount);
+
+    const userId = req.session.user._id;
+    const items = req.body.orginalCart.items;
+    const shippingAddress = req.body.address;
+
+    if (!shippingAddress) {
+      return res.status(400).send("Address is required");
+    }
+
+    const addresses = await checkOutAddress.aggregate([
+      { $match: { userId: new mongoose.Types.ObjectId(userId) } },
+      { $unwind: "$addresses" },
+      {
+        $match: {
+          "addresses._id": new mongoose.Types.ObjectId(shippingAddress),
+        },
+      },
+    ]);
+
+    const shippingAddressFromDb = {
+      name: addresses[0].addresses.name,
+      phone: addresses[0].addresses.phone,
+      pincode: addresses[0].addresses.pincode,
+      locality: addresses[0].addresses.locality,
+      address: addresses[0].addresses.address,
+      city: addresses[0].addresses.city,
+      state: addresses[0].addresses.state,
+    };
     const options = {
-      amount: req.body.amount * 100, // Amount in smallest currency unit (paise)
+      amount: amount * 100,
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     };
 
     try {
       const order = await razorpayInstance.orders.create(options);
-      res.json(order);
+
+      const newOrder = new Order({
+        user: userId,
+        items: items,
+        totalAmount: amount,
+        shippingAddress: shippingAddressFromDb,
+        paymentStatus: "Pending",
+        orderStatus: "Processing",
+        orderId: order.id,
+      });
+      await Cart.updateOne({ userId: userId }, { items: [] });
+      await newOrder.save();
+      res.status(200).json(order);
+    } catch (error) {
+      console.error("Error creating order:", error);
+      res
+        .status(500)
+        .json({ error: "Failed to create order", details: error.message });
+    }
+  },
+  verifyPayment: async (req, res) => {
+    // console.log("verifyPayment - Route Hit");
+    // console.log("Request body:", req.body);
+    const { payment_id, order_id, signature } = req.body;
+
+    const crypto = require("crypto");
+    const generatedSignature = crypto
+      .createHmac("sha256", razorpayInstance.key_secret)
+      .update(order_id + "|" + payment_id)
+      .digest("hex");
+
+    if (generatedSignature !== signature) {
+      return res.status(400).send("Signature verification failed");
+    }
+
+    try {
+      const payment = await razorpayInstance.payments.capture(
+        payment_id,
+        req.body.amount
+      );
+
+      res.json(payment);
     } catch (error) {
       res.status(500).send(error);
     }
@@ -68,7 +152,7 @@ module.exports = {
           addresses: [{ name, phone, pincode, locality, address, city, state }],
         });
         await newUser.save();
-        return res.status(201).json(newUser);
+        return res.redirect("/check-out")
       } else {
         user.addresses.push({
           name,
@@ -109,5 +193,21 @@ module.exports = {
     );
 
     res.redirect("/check-out");
+  },
+  couponCode: (req, res) => {
+    const validCoupons = {
+      COUPON123: 10,
+      DISCOUNT30: 30,
+    };
+
+    const { couponCode } = req.body;
+
+    if (!validCoupons[couponCode]) {
+      return res.status(400).json({ error: "Invalid coupon code" });
+    }
+
+    const couponDiscount = validCoupons[couponCode];
+
+    res.status(201).json({ couponDiscount });
   },
 };
