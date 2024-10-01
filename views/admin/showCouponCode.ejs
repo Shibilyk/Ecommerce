@@ -1,15 +1,30 @@
 <link rel="stylesheet" href="/css/showCouponCode.css" />
 <%- include('../partials/adminSideNav') %>
 <div class="mainContainer">
-  <table>
+  <table class="coupon-table">
     <tr>
       <th>COUPON CODE</th>
       <th>DISCOUNT</th>
+      <th>ACTIONS</th>
     </tr>
     <% coupons.forEach(element => { %>
     <tr>
       <td><%= element.couponName %></td>
-      <td><%= element.discountPercentage %></td>
+      <td><%= element.discountPercentage %> %</td>
+      <td>
+        <a
+          href="/admin/editCoupon/<%= element._id %>"
+          class="action-btn edit-btn"
+          >Edit</a
+        >
+        <button
+          onclick="couponDelete('<%= element._id %>')"
+          href="/admin/deleteCoupon/"
+          class="action-btn remove-btn"
+        >
+          Remove
+        </button>
+      </td>
     </tr>
     <% }) %>
   </table>
@@ -17,3 +32,41 @@
     <a class="add-btn" href="/admin/addCouponCode">Add New Coupon Code</a>
   </div>
 </div>
+<script>
+  const couponDelete = (id) => {
+    swal({
+  title: "Are you sure?",
+  text: "Once deleted, you will not be able to recover this imaginary file!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    fetch(`/admin/deleteCoupon/${id}`, {
+  method: "POST",
+ 
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Coupon deleted:', data);
+    window.location.reload(); 
+  })
+  .catch(error => {
+    console.error('There was an issue with the request:', error);
+  });
+
+   
+  } else {
+    swal("Your imaginary file is safe!");
+  }
+});
+  };
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+

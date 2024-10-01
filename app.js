@@ -47,10 +47,10 @@ app.use("/user", productDetail);
 app.use("/user", authentication);
 app.use("/cart", validation, cartRoutes);
 app.use("/", validation, checkOut);
-app.use("/order",orderList);
-app.use("/admin",userList)
-app.use("/dashboard",dashboard);
-app.use('/admin',couponCode)
+app.use("/order",validation,orderList);
+app.use("/admin",validation,userList)
+app.use("/dashboard",validation,dashboard);
+app.use('/admin',validation,couponCode)
 
 
 app.get("/hello",(req,res)=>{

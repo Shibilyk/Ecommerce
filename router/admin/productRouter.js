@@ -4,6 +4,8 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const validation = require("../../middleware/dbValidation")
+
 
 ///////////////////////////////////////////
 
@@ -44,7 +46,7 @@ const {
 } = require("../../controller/admin/productCtrl");
 
 router
-  .get("/product", getAddProduct)
+  .get("/product",validation, getAddProduct)
   .post(
     "/product",
     upload.fields([
@@ -53,10 +55,10 @@ router
     ]),
     postProduct
   )
-  .get("/getSubCategory/:id", getSubCategory)
-  .get("/showProduct", showProduct)
+  .get("/getSubCategory/:id",validation, getSubCategory)
+  .get("/showProduct",validation, showProduct)
   .delete("/products/delete/:id", productDelete)
-  .get("/updateProduct/:id", productUpdate)
+  .get("/updateProduct/:id",validation, productUpdate)
   .post(
     "/updateProduct/:id",
     upload.fields([
@@ -65,6 +67,6 @@ router
     ]),
     productUpdatePost
   )
-  .get("/imageShow/:id",showImage)
+  .get("/imageShow/:id",validation,showImage)
 
 module.exports = router;

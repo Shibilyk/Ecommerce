@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const validation = require("../../middleware/dbValidation")
 
 // Ensure the directory exists
 const dir = path.join(__dirname, "../../public/images");
@@ -40,13 +41,13 @@ const {
   getUpdateCategory,
   postUpdateCategory
 } = require("../../controller/admin/categoryCtrl");
-
+ 
 router
-  .get("/category", getcategory)
+  .get("/category",validation, getcategory)
   .post("/category", upload.single("image"),postcategory)
-  .get("/showCategory", getshowCategory)
+  .get("/showCategory",validation, getshowCategory)
   .delete('/deleteCategory/:id',deleteCategory)
-  .get("/updateCategory/:id",getUpdateCategory)
+  .get("/updateCategory/:id",validation,getUpdateCategory)
   .post("/updateCategory/:id",upload.single("image"),postUpdateCategory)
 
 module.exports = router;

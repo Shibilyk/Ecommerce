@@ -6,8 +6,6 @@ const nodemailer = require("nodemailer");
 const authmodel = require("../../model/user/userModel");
 const { ObjectId } = require("mongodb");
 
-
-
 const transporter = nodemailer.createTransport({
   service: process.env.EMAIL_SERVICE,
   auth: {
@@ -168,7 +166,6 @@ module.exports = {
     res.render("./user/login", { errorMessage });
   },
   loginPost: async (req, res) => {
-    
     try {
       const { email, password } = req.body;
 
@@ -195,10 +192,10 @@ module.exports = {
         req.session.isAdmin = true;
         return res.redirect("/dashboard");
       }
-      if(req.session.prepage){
-        const rout = req.session.prepage
-        delete req.session.prepage
-        return res.redirect(rout) 
+      if (req.session.prepage) {
+        const rout = req.session.prepage;
+        delete req.session.prepage;
+        return res.redirect(rout);
       }
       res.redirect("/user/home");
     } catch (error) {

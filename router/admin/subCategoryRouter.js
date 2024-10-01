@@ -4,6 +4,7 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const validation = require("../../middleware/dbValidation");
 
 const dir = path.join(__dirname, "../../public/images");
 if (!fs.existsSync(dir)) {
@@ -34,14 +35,14 @@ const {
   postSubCategory,
   subCategoryDelete,
   editSubCategotyGet,
-  editSubCategotypost
+  editSubCategotypost,
 } = require("../../controller/admin/subCategoryCtrl");
 
 router
-  .get("/subCategory", getSubCategory)
+  .get("/subCategory", validation, getSubCategory)
   .post("/subCategory", upload.single("image"), postSubCategory)
-  .delete('/subCetagoryDelete/:id',subCategoryDelete)
-  .get("/subCategoryUpdate/:argu",editSubCategotyGet)
-  .post("/subCategoryUpdate/:id",upload.single("image"),editSubCategotypost)
+  .delete("/subCetagoryDelete/:id", subCategoryDelete)
+  .get("/subCategoryUpdate/:argu", validation, editSubCategotyGet)
+  .post("/subCategoryUpdate/:id", upload.single("image"), editSubCategotypost);
 
-module.exports = router; 
+module.exports = router;
