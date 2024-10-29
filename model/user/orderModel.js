@@ -21,10 +21,6 @@ const orderSchema = new mongoose.Schema({
             size: {
                 type: String,
                 required: false
-            },
-            price: {
-                type: Number,
-                required: true
             }
         }
     ],

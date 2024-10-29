@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Shoping Cart</title>
+    <title>POLO CLUB</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--===============================================================================================-->
@@ -100,7 +100,7 @@
                 </li>
 
                 <li>
-                  <a href="product.html">Shop</a>
+                  <a href="/user/products">Shop</a>
                 </li>
 
                 <li class="label1" data-label1="hot">
@@ -220,7 +220,7 @@
           </li>
 
           <li>
-            <a href="product.html">Shop</a>
+            <a href="/user/products">Shop</a>
           </li>
 
           <li>
@@ -932,7 +932,7 @@
                           <span style="color: #718096"
                             >Price (<%= orginalCart? orginalCart.items.length:"0" %> items)</span
                           >
-                          <span style="color: #2d3748; font-weight: bold">
+                          <spanm id="orginalTotal"   data-total="<%= total %>"  style="color: #2d3748; font-weight: bold">
                             ₹<%= total %></span
                           >
                         </div>
@@ -993,7 +993,7 @@
                             "
                           >
                             <span style="color: #38a169; font-weight: bold"
-                              >Your Total Savings on this order ₹<span
+                              >Your Total Savings on this order ₹<span total-save="<%= totalSave %>"
                                 id="saveMassege"
                                 ><%= totalSave %></span
                               ></span
@@ -1204,10 +1204,11 @@
             break;
           }
         }
-
-        const orginalCart = document
-          .getElementById("rzp-button1")
-          .getAttribute("data-cart-id");
+        
+        const cartToSend = document
+        .getElementById("rzp-button1")
+        .getAttribute("data-cart-id");    
+        console.log('Original Cart:', cartToSend);
         fetch("/createOrder", {
           method: "POST",
           headers: {
@@ -1216,7 +1217,7 @@
           body: JSON.stringify({
             amount: amount,
             address: selectedValue,
-            orginalCart: orginalCart,
+            originalCart: cartToSend._id,
           }),
         })
           .then((response) => {
@@ -1334,22 +1335,23 @@
               console.log(data);
 
               const discount = data.couponDiscount;
-              const originalTotal = parseFloat(
-                document.getElementById("total").value
-              );
+              const originalTotalElement = document.getElementById('orginalTotal');
+              let originalTotal = parseFloat(originalTotalElement.getAttribute('data-total')); 
+           
               const saveMassege = parseFloat(
                 document.getElementById("saveMassege").innerText
               );
-
+              const productSave = document.getElementById("saveMassege").getAttribute("total-save")
               const discountPercentage = data.couponDiscount;
               const discountAmount = (originalTotal * discountPercentage) / 100;
               const difference = originalTotal - discountAmount;
 
               const newTotal = originalTotal - discountAmount;
-              document.getElementById("total").value = newTotal.toFixed(2);
+              document.getElementById("total").value = Math.round( newTotal);
               document.getElementById("saveMassege").innerText = (
-                saveMassege + difference
-              ).toFixed(2);
+  parseFloat(productSave) + parseFloat(discountAmount)
+).toFixed(2);
+
               const obj = ` <div
                                 style="
                                   display: flex;
@@ -1365,13 +1367,17 @@
                               </div>`;
 
               const container = document.getElementById("priceDetails");
-              container.insertAdjacentHTML("beforeend", obj);
-
+              container.innerHTML = "";
+              container.insertAdjacentHTML("beforeend", obj); 
               document.getElementById("couponError").style.display = "none";
             } else {
-              console.error("Invalid coupon code");
-
-              // Show error message
+              const productSave = document.getElementById("saveMassege").getAttribute("total-save")
+              document.getElementById("saveMassege").innerText=productSave
+              const container = document.getElementById("priceDetails");
+              container.innerHTML = "";
+              const originalTotalElement = document.getElementById('orginalTotal');
+              let originalTotal = parseFloat(originalTotalElement.getAttribute('data-total')); 
+              document.getElementById("total").value = originalTotal
               document.getElementById("couponError").style.display = "block";
             }
           })

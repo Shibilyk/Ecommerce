@@ -4,6 +4,7 @@ const checkOutAddress = require("../../model/user/checkOut");
 const mongoose = require("mongoose");
 const razorpayInstance = require("../../config/razorpay");
 const Order = require("../../model/user/orderModel");
+const CouponCode = require("../../model/admin/couponCode");
 
 const razorpay = require("razorpay");
 const { match } = require("assert");
@@ -12,7 +13,7 @@ module.exports = {
     const userId = req.session.user._id;
     let address = await checkOutAddress.findOne({ userId });
     const orginalCart = await Cart.findOne({ userId });
-
+    req.session.cart = orginalCart._id;
     const cart = await Cart.aggregate([
       { $match: { userId: new mongoose.Types.ObjectId(userId) } },
       { $unwind: "$items" },
@@ -32,8 +33,6 @@ module.exports = {
         (element.productDetails.price - element.productDetails.offerPrice);
       return total + itemSave;
     }, 0);
-
-
     res.render("./user/checkOut", {
       totalSave,
       orginalCart,
@@ -46,7 +45,7 @@ module.exports = {
     const amount = parseFloat(req.body.amount);
 
     const userId = req.session.user._id;
-    const items = req.body.orginalCart.items;
+    req.session.checkOut = {};
     const shippingAddress = req.body.address;
 
     if (!shippingAddress) {
@@ -63,7 +62,7 @@ module.exports = {
       },
     ]);
 
-    const shippingAddressFromDb = {
+    req.session.checkOut.shippingAddress = {
       name: addresses[0].addresses.name,
       phone: addresses[0].addresses.phone,
       pincode: addresses[0].addresses.pincode,
@@ -80,18 +79,8 @@ module.exports = {
 
     try {
       const order = await razorpayInstance.orders.create(options);
-
-      const newOrder = new Order({
-        user: userId,
-        items: items,
-        totalAmount: amount,
-        shippingAddress: shippingAddressFromDb,
-        paymentStatus: "Pending",
-        orderStatus: "Processing",
-        orderId: order.id,
-      });
-      await Cart.updateOne({ userId: userId }, { items: [] });
-      await newOrder.save();
+      req.session.checkOut.orderId = order.id;
+      req.session.checkOut.amount = amount;
       res.status(200).json(order);
     } catch (error) {
       console.error("Error creating order:", error);
@@ -101,10 +90,7 @@ module.exports = {
     }
   },
   verifyPayment: async (req, res) => {
-    // console.log("verifyPayment - Route Hit");
-    // console.log("Request body:", req.body);
     const { payment_id, order_id, signature } = req.body;
-
     const crypto = require("crypto");
     const generatedSignature = crypto
       .createHmac("sha256", razorpayInstance.key_secret)
@@ -112,17 +98,56 @@ module.exports = {
       .digest("hex");
 
     if (generatedSignature !== signature) {
+      delete req.session.checkOut;
       return res.status(400).send("Signature verification failed");
     }
 
     try {
-      const payment = await razorpayInstance.payments.capture(
-        payment_id,
-        req.body.amount
-      );
+      const paymentDetails = await razorpayInstance.payments.fetch(payment_id);
 
-      res.json(payment);
+      if (paymentDetails.status === "captured") {
+        console.log("Payment already captured");
+      } else {
+        await razorpayInstance.payments.capture(payment_id, req.body.amount);
+        console.log("Payment captured successfully");
+      }
+      const cart = await Cart.findById(req.session.cart);
+      const orderItems = cart.items.map(item => ({
+        product: item.productId,
+        quantity: item.quantity,
+        size: item.size,
+      }));
+
+      const userId = req.session.user._id;
+      const newOrder = new Order({
+        user: userId,
+        items: orderItems,
+        totalAmount: req.session.checkOut.amount,
+        shippingAddress: {
+          name:req.session.checkOut.shippingAddress.name,
+          address:req.session.checkOut.shippingAddress.address,
+          city:req.session.checkOut.shippingAddress.city,
+          locality:req.session.checkOut.shippingAddress.locality,
+          state:req.session.checkOut.shippingAddress.state,
+          pincode:req.session.checkOut.shippingAddress.pincode,
+          phone:req.session.checkOut.shippingAddress.phone,
+        },
+        paymentStatus: "Completed",
+        orderStatus: "Processing",
+        orderId: req.session.checkOut.orderId,
+      });
+
+
+      delete req.session.checkOut;
+
+      await Cart.updateOne({ userId: userId }, { items: [] });
+
+      await newOrder.save();
+
+      res.json({ message: "Order successfully placed" });
     } catch (error) {
+      console.error("Error during order creation:", error);
+      delete req.session.checkOut;
       res.status(500).send(error);
     }
   },
@@ -152,7 +177,7 @@ module.exports = {
           addresses: [{ name, phone, pincode, locality, address, city, state }],
         });
         await newUser.save();
-        return res.redirect("/check-out")
+        return res.redirect("/check-out");
       } else {
         user.addresses.push({
           name,
@@ -194,20 +219,13 @@ module.exports = {
 
     res.redirect("/check-out");
   },
-  couponCode: (req, res) => {
-    const validCoupons = {
-      COUPON123: 10,
-      DISCOUNT30: 30,
-    };
-
+  couponCode: async (req, res) => {
     const { couponCode } = req.body;
-
-    if (!validCoupons[couponCode]) {
+    const coupon = await CouponCode.findOne({ couponName: couponCode });
+    if (!coupon) {
       return res.status(400).json({ error: "Invalid coupon code" });
     }
 
-    const couponDiscount = validCoupons[couponCode];
-
-    res.status(201).json({ couponDiscount });
+    res.status(201).json({ couponDiscount: coupon.discountPercentage });
   },
 };

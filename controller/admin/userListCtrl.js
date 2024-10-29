@@ -1,15 +1,12 @@
 const User = require("../../model/user/userModel");
 module.exports = {
   getListUser: async (req, res) => {
-    const users = await User.find();
-    console.log(users);
-    
+    const users = await User.find();    
     res.render("./admin/userList", { users });
   },
   userBlock: async (req, res) => {
     try {
       const { userId, status } = req.body;
-      console.log(status);
       
       
       const result = await User.findByIdAndUpdate(

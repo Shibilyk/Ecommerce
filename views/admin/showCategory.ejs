@@ -9,7 +9,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <title>OnShop</title>
+    <title>POLO CLUB</title>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
       rel="stylesheet"
@@ -64,30 +64,7 @@
         width: 100px;
         height: 100px;
       }
-      #li {
-        width: 15vw;
-        display: flex;
-        flex-direction: column;
-      }
-      #li a {
-        height: 50px;
-        display: flex;
-        align-items: center;
-        padding: 0.5rem 1rem;
-        color: #4b5563;
-        transition: background-color 0.3s ease;
-        border-radius: 0.25rem;
-        margin: 0.25rem 0;
-      }
-      #li a:hover {
-        background-color: #e2e8f0;
-      }
-      #li i {
-        margin-right: 10px;
-        color: #6b7280;
-        width: 1.5rem;
-        text-align: center;
-      }
+      
       .adminProfile {
         padding-right: 30px;
       }
@@ -109,47 +86,15 @@
       td {
         vertical-align: top;
       }
-      .action-links a {
-        color: #4b5563;
-        font-weight: 500;
-        transition: color 0.3s ease;
-        margin-left: 0.5rem;
-      }
-      .action-links a:hover {
-        color: #6b7280;
-      }
+   
     </style>
   </head>
   <body>
+   
     <div class="fbody">
-      <div class="side_bar">
-        <a href="#"
-          ><img src="img/e-commerce-logo.png" alt="E-commerce Logo"
-        /></a>
-        <div id="li">
-          <a href="/dashboard"><i class="fa-solid fa-gauge"></i>Dashboard</a>
-          <a href="/showProduct"><i class="fa-solid fa-cart-shopping"></i>Product</a>
-          <a href="/showCategory"
-            ><i class="fa-solid fa-layer-group"></i>Category</a
-          >
-          <a href="/admin/user"><i class="fa-regular fa-user"></i>Users</a>
-          <a href=""><i class="fa-solid fa-cart-shopping"></i>Orders</a>
-
-        </div>
-      </div>
+      <%- include('../partials/adminSideNav') %>
       <div class="rside">
-        <div class="top_bar">
-          <input
-            type="text"
-            placeholder="Search"
-            class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-          />
-          <div class="adminProfile">
-            <a href="#" class="text-purple-600 hover:text-purple-800"
-              >Profile</a
-            >
-          </div>
-        </div>
+        
         <div class="content bg-gray-100 p-6">
           <div class="mb-6 flex justify-between items-center">
             <h1 class="text-2xl font-bold text-purple-800">Categories</h1>

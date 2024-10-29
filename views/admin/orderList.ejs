@@ -1,2 +1,107 @@
+<link rel="stylesheet" href="/css/orderList.css" />
 <%- include('../partials/adminSideNav') %>
-<h1>orderPage</h1>
+<div class="outerMain">
+  <h1 class="table-title">Order Details</h1>
+
+  <table>
+    <tr>
+      <th>Order ID</th>
+      <th>Order Status</th>
+      <th>Payment Status</th>
+      <th>Ordered At</th>
+      <th>Total Amount</th>
+    </tr>
+    <% orderList.forEach(element => { %>
+    <tr>
+      <td><%= element.orderId %></td>
+      <td>
+        <select
+          onchange="changeOrderStatus('<%=element._id%>')"
+          name="orderStatus"
+          id="orderStatus-<%= element._id %>"
+        >
+          <option value="<%= element.orderStatus %>" selected>
+            <%= element.orderStatus %>
+          </option>
+          <% if (element.orderStatus !== 'Processing') { %>
+            <option value="Processing">Processing</option>
+            <% } %>
+          <% if (element.orderStatus !== 'Shipped') { %>
+          <option value="Shipped">Shipped</option>
+          <% } %> <% if (element.orderStatus !== 'Delivered') { %>
+          <option value="Delivered">Delivered</option>
+          <% } %>
+        </select>
+      </td>
+      <td><%= element.paymentStatus %></td>
+      <td><%= element.orderedAt.toLocaleString() %></td>
+      <td><%= element.totalAmount %></td>
+    </tr>
+    <% }) %>
+  </table>
+</div>
+<!-- <h2 class="table-title">Shipping Address</h2>
+
+<table>
+    <tr>
+        <th>Field</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td>Muhammed Shibily k</td>
+    </tr>
+    <tr>
+        <td>Address</td>
+        <td>Odompatta<br>Chembrasseri east po</td>
+    </tr>
+    <tr>
+        <td>City</td>
+        <td>Pandikkad</td>
+    </tr>
+    <tr>
+        <td>Locality</td>
+        <td>Pandikkad</td>
+    </tr>
+    <tr>
+        <td>State</td>
+        <td>Kerala</td>
+    </tr>
+    <tr>
+        <td>Pincode</td>
+        <td>679327</td>
+    </tr>
+    <tr>
+        <td>Phone</td>
+        <td>09747286475</td>
+    </tr>
+</table>
+
+<h2 class="table-title">Items</h2>
+
+<table>
+    <tr>
+        <th>Product ID</th>
+        <th>Quantity</th>
+        <th>Size</th>
+    </tr>
+    <tr>
+        <td>6687eb16fc929893239d953d</td>
+        <td>1</td>
+        <td>XS</td>
+    </tr>
+</table> -->
+
+<script>
+  function changeOrderStatus(id) {
+    const orderStatus = document.getElementById("orderStatus-"+id).value;
+    fetch("/order/update-order-status", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ orderStatus: orderStatus, id: id }),
+    })
+     
+  }
+</script>

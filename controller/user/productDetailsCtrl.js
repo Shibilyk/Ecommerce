@@ -61,4 +61,8 @@ module.exports = {
     const products = await productModel.find({ category: new ObjectId(id) });
     res.render("./user/product", { products });
   },
+  getProducts: async (req, res) => {
+    const products = await productModel.find();
+    res.render("./user/product", { products });
+  },
 };
